@@ -1,3 +1,3 @@
 # GalleryTestTask
-Unity Developer Test Task
+Unity Developer Test Task.
 Все задания в одном проекте.
