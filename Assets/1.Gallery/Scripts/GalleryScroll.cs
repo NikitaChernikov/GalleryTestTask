@@ -11,7 +11,7 @@ public class GalleryScroll : MonoBehaviour
     [SerializeField] private GameObject _imagePrefab; 
     [SerializeField] private Transform _imageContainer; 
     [SerializeField] private ScrollRect _scrollRect; 
-    [SerializeField] private GridLayoutGroup _gridLayout; 
+    [SerializeField] private GridLayoutGroup _gridLayout;
     
     private int _currentImageIndex = 1; 
     private int _totalImages; 
@@ -62,14 +62,11 @@ public class GalleryScroll : MonoBehaviour
 
     public void OnScrollValueChanged()
     {
-        // Действия при прокрутке
         float contentHeight = _gridLayout.cellSize.y * Mathf.Ceil(_totalImages / 2f);
         float viewHeight = _scrollRect.content.rect.height;
 
-        // Если прокрученная часть контента достигла или превысила высоту контейнера
         if (_scrollRect.normalizedPosition.y * contentHeight <= (viewHeight - contentHeight))
         {
-            // Загрузить следующие изображения, если еще есть доступные
             if (_currentImageIndex <= _totalImages)
             {
                 StartCoroutine(LoadImages());

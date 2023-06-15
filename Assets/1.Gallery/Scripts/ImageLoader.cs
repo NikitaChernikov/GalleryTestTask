@@ -1,15 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+using System;
 
 public class ImageLoader : MonoBehaviour
 {
-    private static string PLAYER_PREFS_KEY = "ImageToLoad";
+    public event EventHandler<OnInsertImageEventArgs> OnInsertImage;
 
-    [SerializeField] private Image _image; // —сылка на компонент Image, который будет отображать изображение
+    private static string PLAYER_PREFS_KEY = "ImageToLoad"; 
 
-    private string _imageUrl; // URL изображени€
+    private string _imageUrl; 
 
     IEnumerator Start()
     {
@@ -18,18 +19,16 @@ public class ImageLoader : MonoBehaviour
         yield return LoadImageFromServer();
     }
 
-    IEnumerator LoadImageFromServer()
+    private IEnumerator LoadImageFromServer()
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(_imageUrl);
 
         yield return request.SendWebRequest();
 
-        // ѕровер€ем, нет ли ошибок при загрузке изображени€
         if (request.result != UnityWebRequest.Result.ProtocolError)
         {
             Texture2D texture = DownloadHandlerTexture.GetContent(request);
-            _image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
-            _image.SetNativeSize(); // ”станавливаем размеры Image под размеры загруженного изображени€
+            OnInsertImage?.Invoke(this, new OnInsertImageEventArgs { texture = texture });
         }
         else
         {
