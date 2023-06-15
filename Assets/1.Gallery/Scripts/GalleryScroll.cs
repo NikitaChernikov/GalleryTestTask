@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class GalleryScroll : MonoBehaviour
 {
-    private static string baseUrl = "http://data.ikppbb.com/test-task-unity-data/pics/";
+    private static string BASE_URL = "http://data.ikppbb.com/test-task-unity-data/pics/";
 
     [SerializeField] private GameObject _imagePrefab; 
     [SerializeField] private Transform _imageContainer; 
@@ -17,7 +17,7 @@ public class GalleryScroll : MonoBehaviour
     private int _totalImages; 
     private float _rowHeight; 
 
-    private List<GameObject> _loadedImages = new List<GameObject>(); 
+    private List<GameObject> _loadedImages = new List<GameObject>();
 
     private void Start()
     {
@@ -26,15 +26,13 @@ public class GalleryScroll : MonoBehaviour
 
     private IEnumerator LoadImages()
     {
-        // Определить высоту строки на основе префаба изображения
         GameObject tempImageObj = Instantiate(_imagePrefab, _imageContainer);
         _rowHeight = tempImageObj.GetComponent<RectTransform>().rect.height;
         Destroy(tempImageObj);
 
-        // Постепенно загружать изображения с сервера, пока не будет ошибка загрузки
         while (true)
         {
-            string imageUrl = baseUrl + _currentImageIndex + ".jpg";
+            string imageUrl = BASE_URL + _currentImageIndex + ".jpg";
             UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
             yield return request.SendWebRequest();
 

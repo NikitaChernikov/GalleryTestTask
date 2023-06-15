@@ -6,22 +6,27 @@ using System;
 
 public class ImageLoader : MonoBehaviour
 {
+    private static string IMAGE_URL = "http://data.ikppbb.com/test-task-unity-data/pics/";
+
     public event EventHandler<OnInsertImageEventArgs> OnInsertImage;
 
     private static string PLAYER_PREFS_KEY = "ImageToLoad"; 
 
-    private string _imageUrl; 
-
-    IEnumerator Start()
+    private void Start()
     {
         int imageNumber = PlayerPrefs.GetInt(PLAYER_PREFS_KEY);
-        _imageUrl = "http://data.ikppbb.com/test-task-unity-data/pics/" + imageNumber + ".jpg";
-        yield return LoadImageFromServer();
+        StartCoroutine(IELoadImageFromServer(imageNumber));
     }
 
-    private IEnumerator LoadImageFromServer()
+    public void LoadImageFromServer(int imageNumber)
     {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture(_imageUrl);
+        StartCoroutine(IELoadImageFromServer(imageNumber));
+    }
+
+    private IEnumerator IELoadImageFromServer(int imageNumber)
+    {
+        string imageUrl = IMAGE_URL + imageNumber + ".jpg";
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
 
         yield return request.SendWebRequest();
 

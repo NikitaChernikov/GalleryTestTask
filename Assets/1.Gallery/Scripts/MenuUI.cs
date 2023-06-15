@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class MenuUI : MonoBehaviour
 {
     [SerializeField] private GameObject _loadingUI;
+    [SerializeField] private Text _textField;
     [SerializeField] private Slider _loadingBar;
     [SerializeField] private Text _percentText;
     
@@ -18,6 +19,14 @@ public class MenuUI : MonoBehaviour
     private void OnEnable()
     {
         _menu.OnStartLoading += Menu_OnStartLoading;
+        _menu.OnFinishLoading += Menu_OnFinishLoading;
+    }
+
+    private void Menu_OnFinishLoading(object sender, System.EventArgs e)
+    {
+        _textField.text = "TAP TO CONTINUE";
+        _loadingBar.value = 1f;
+        _percentText.text = "100%";
     }
 
     private void OnDisable()

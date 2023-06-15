@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     public event EventHandler<OnProgressBarChangedEventArgs> OnStartLoading;
+    public event EventHandler OnFinishLoading;
 
     public void ExitGame()
     {
@@ -26,7 +27,8 @@ public class Menu : MonoBehaviour
             OnStartLoading?.Invoke(this, new OnProgressBarChangedEventArgs { Percent = loadScene.progress});
             if (loadScene.progress >= .9f)
             {
-                loadScene.allowSceneActivation = true;
+                OnFinishLoading?.Invoke(this, EventArgs.Empty);
+                if (Input.anyKeyDown) loadScene.allowSceneActivation = true;
             }
             yield return null;
         }
